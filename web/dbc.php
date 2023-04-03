@@ -1,12 +1,24 @@
 <?php
+require('../app/functions.php');
 
-// 関数一つに一つの機能のみを持たせる
+// 詳細画面を表示する流れ
+// ① 一覧画面からブログのidをつけて送る
+// GETリクエストでidをURLにつけて送る
+
+// ② 詳細ページでidを受け取る
+// PHPの$_GETでidを取得
+
+// ③ idを元にデータベースから記事を取得
+// SELECT文でプレースホルダーを使う
+
+// ④ 詳細ページに表示する
+// HTMLにPHPを埋め込んで表示                
 
 // 1.データベース接続
 // 引数：なし
 // 返り値：接続結果を返す
 function dbConnect() {
-    $dsn = 'mysql:host=localhost;dbname=dot_app;charset=utf8';
+    $dsn = 'mysql:host=localhost;dbname=blog_app;charset=utf8';
     $user = 'koku';
     $pass = '00000abc';
     
@@ -22,7 +34,7 @@ function dbConnect() {
     return $dbh;
 }
 
-echo "<br>";
+echo '<br>';
 
 // 2.データを取得する
 // 引数：なし
@@ -30,7 +42,7 @@ echo "<br>";
 function getAllBlog() {
     $dbh = dbConnect();
     // ①SQLの準備
-    $sql = "SELECT * FROM data";
+    $sql = 'SELECT * FROM blog';
     // ②SQLの実行
     $stmt = $dbh->query($sql);
     // ③SQLの結果を受け取る
@@ -83,9 +95,14 @@ date_default_timezone_set('Asia/Tokyo');
             <td><?php echo $column['id'] ?></td>
             <td><?php echo $column['title'] ?></td>
             <td><?php echo setCategoryName($column['category']) ?></td>
+            <!-- クリックするとphp側でidの値を受け取る -->
+            <td><a href="detail.php?id=<?php echo $column['id'] ?>">詳細</a></td>
         </tr>
         <?php endforeach; ?>
     </table>
+
+
+    
 
 </body>
 </html>
