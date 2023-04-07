@@ -1,10 +1,12 @@
 <?php
 
-require_once('dbc.php');
+require_once('blog.php');
 
-// $id = $_GET['id'];
+// インスタンス化
+$blog = new Blog();
 
-$result = getBlog($_GET['id']);
+// メソッド呼び出し
+$result = $blog->getById($_GET['id']);
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +23,8 @@ $result = getBlog($_GET['id']);
     <h2>ブログ詳細</h2>
     <h3>タイトル：<?php echo $result['title'] ?></h3>
     <p>投稿日時：<?php echo $result['post_at'] ?></p>
-    <p>カテゴリ：<?php echo setCategoryName($result['category']) ?></p>
+     <!-- メソッド呼び出し -->
+    <p>カテゴリ：<?php echo $blog->setCategoryName($result['category']) ?></p>
     <hr>
     <p>本文：<?php echo $result['content'] ?></p>
 

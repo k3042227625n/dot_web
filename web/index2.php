@@ -1,15 +1,12 @@
 <?php
-require_once('dbc.php');           
-// ブログデータの新規作成とトランザクション
-// 新規データ作成の流れ
-// ①フォームから値を渡す
-// ②フォームから値を受け取る
-// ③バリデーション(検証)する
-// 入力内容が正しい値かどうかチェックすること
-// ④トランザクション(取引)を開始
-// データをDBに入力するときに行う整合性を保つための仕組み
-// ⑤データをDBに登録する
-$blogData = getAllBlog();
+require_once('blog.php');           
+ini_set('display_errors', "On");
+// インスタンス化
+$blog = new Blog();
+// var_dump($dbc);
+
+// メソッド呼び出し
+$blogData = $blog->getAll();
 
 ?>
 <!DOCTYPE html>
@@ -37,8 +34,8 @@ $blogData = getAllBlog();
         <tr>
             <td><?php echo $column['id'] ?></td>
             <td><?php echo $column['title'] ?></td>
-            <td><?php echo setCategoryName($column['category']) ?></td>
-            <!-- クリックするとphp側でidの値を受け取る -->
+            <!-- メソッド呼び出し -->
+            <td><?php echo $blog->setCategoryName($column['category']) ?></td>
             <td><a href="detail.php?id=<?php echo $column['id'] ?>">詳細</a></td>
         </tr>
         <?php endforeach; ?>
