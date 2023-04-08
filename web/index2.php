@@ -1,7 +1,9 @@
+<!-- ① 編集ボタンクリックでIDを送る -->
+
 <?php
 require_once('blog.php');           
 ini_set('display_errors', "On");
-// インスタンス化
+
 $blog = new Blog();
 // var_dump($dbc);
 
@@ -34,9 +36,10 @@ $blogData = $blog->getAll();
         <tr>
             <td><?php echo $column['id'] ?></td>
             <td><?php echo $column['title'] ?></td>
-            <!-- メソッド呼び出し -->
             <td><?php echo $blog->setCategoryName($column['category']) ?></td>
             <td><a href="detail.php?id=<?php echo $column['id'] ?>">詳細</a></td>
+            <!-- ① 編集ボタンクリックでIDを送る -->
+            <td><a href="update_form.php?id=<?php echo $column['id'] ?>">編集</a></td>
         </tr>
         <?php endforeach; ?>
     </table>
