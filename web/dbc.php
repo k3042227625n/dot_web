@@ -1,20 +1,16 @@
 <?php
-// 編集機能作成の流れ
-// ①編集ボタンクリックでIDを送る
-// ②IDを受け取り内容を表示
-// ③編集データとIDを渡す
-// ④IDから探してDBを更新する
+require_once('env.php');
 
 class Dbc 
 {
-    // 継承で共通化することで同じコードを何度も書かないようにする
     protected $table_name;
 
     protected function dbConnect() {
-        $dsn = 'mysql:host=localhost;dbname=blog_app;charset=utf8';
-        $user = 'koku';
-        $pass = '00000abc';
-        
+        $host = DB_HOST;
+        $dbname = DB_NAME;
+        $user = DB_USER;
+        $pass = DB_PASS;
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
         try {
             $dbh = new PDO($dsn, $user, $pass, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -28,7 +24,6 @@ class Dbc
     }
 
     public function getAll() {
-        // クラス内で別のfunctionを使うときはthis
         $dbh = $this->dbConnect();
         $sql = "SELECT * FROM $this->table_name";
         $stmt = $dbh->query($sql);
@@ -43,7 +38,6 @@ class Dbc
         if(empty($id)) {
             exit(不正です。);
           }
-          // クラス内で別のfunctionを使うときはthis
           $dbh = $this->dbConnect();
           
           $stmt = $dbh->prepare("SELECT * FROM $this->table_name Where id = :id");
@@ -55,6 +49,20 @@ class Dbc
             exit('ブログがありません。');
           }
           return $result;
+    }
+
+    public function delete($id){
+        if(empty($id)) {
+            exit(不正です。);
+          }
+          $dbh = $this->dbConnect();
+          
+          $stmt = $dbh->prepare("DELETE FROM $this->table_name Where id = :id");
+          $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+          $stmt->execute();
+          echo 'ブログを削除しました！';
+          return $result;
+
     }
 
     

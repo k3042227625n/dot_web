@@ -1,5 +1,3 @@
-<!-- ① 編集ボタンクリックでIDを送る -->
-
 <?php
 require_once('blog.php');           
 ini_set('display_errors', "On");
@@ -9,6 +7,10 @@ $blog = new Blog();
 
 // メソッド呼び出し
 $blogData = $blog->getAll();
+
+function h($s) {
+    return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
+}
 
 ?>
 <!DOCTYPE html>
@@ -28,18 +30,18 @@ $blogData = $blog->getAll();
 
     <table>
         <tr>
-            <th>No</th>
             <th>タイトル</th>
             <th>カテゴリ</th>
+            <th>投稿日時</th>
         </tr>
         <?php foreach ($blogData as $column): ?>
         <tr>
-            <td><?php echo $column['id'] ?></td>
-            <td><?php echo $column['title'] ?></td>
-            <td><?php echo $blog->setCategoryName($column['category']) ?></td>
+            <td><?php echo h($column['title']) ?></td>
+            <td><?php echo h($blog->setCategoryName($column['category'])) ?></td>
+            <td><?php echo h($column['post_at']) ?></td>
             <td><a href="detail.php?id=<?php echo $column['id'] ?>">詳細</a></td>
-            <!-- ① 編集ボタンクリックでIDを送る -->
             <td><a href="update_form.php?id=<?php echo $column['id'] ?>">編集</a></td>
+            <td><a href="blog_delete.php?id=<?php echo $column['id'] ?>">削除</a></td>
         </tr>
         <?php endforeach; ?>
     </table>

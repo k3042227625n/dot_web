@@ -26,8 +26,6 @@ $publish_status = (int)$result['publish_status'];
 <body>
     <h2>ブログ更新フォーム</h2>
     <form action="blog_update.php" method="POST">
-
-        <!-- ③ 編集データとIDを渡す -->
         
         <input type="hidden" name="id" value="<?php echo $id ?>">
         <p>ブログタイトル</p>
